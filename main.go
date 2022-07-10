@@ -55,6 +55,8 @@ func run(runs int) {
 
 	bar := progressbar.Default(int64(max))
 
+	startTime := time.Now().UnixNano()
+
 	for i := 0; i < max; i++ {
 		attempts++
 		if runSimulation() {
@@ -66,10 +68,13 @@ func run(runs int) {
 		bar.Add(1)
 	}
 
+	endTime := time.Now().UnixNano()
+
 	fmt.Println("Attempts:", attempts)
 	fmt.Println("Successes:", successes)
 	fmt.Println("Fails:", fails)
 	fmt.Println("Success Rate:", float64(successes)/float64(attempts)*100, "%")
+	fmt.Println("Time:", (endTime-startTime)/1000000, "ms")
 }
 
 // SIMULATION INSTRUCTIONS:
