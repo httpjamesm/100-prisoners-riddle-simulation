@@ -106,42 +106,34 @@ func runSimulation() (success bool) {
 		room[i] = boxes[i-1]
 	}
 
-	successfulPrisoners := []int{}
+	successfulPrisoners := 0
 
 	for prisonerNumber := 1; prisonerNumber < 101; prisonerNumber++ {
 		// first prisoner goes to the box with their number
 		initialBoxContents := room[prisonerNumber]
 		if initialBoxContents == prisonerNumber {
 			// if that box has the prisoner's number, they're successful
-			successfulPrisoners = append(successfulPrisoners, prisonerNumber)
+			successfulPrisoners++
 			continue
 		}
 
 		// otherwise follow the numbers
-		foundBox := false
-
 		attempts := 0
 
 		currentBoxContents := initialBoxContents
 
-		trail := []int{
-			prisonerNumber,
-		}
-
-		for !foundBox {
+		for {
 			if attempts == 49 {
 				// the first box counted as 1 attempt, and 50 is the max, so stop after 49 (49 + 1 = 50)
 				return false
 			}
 
 			attempts++
-			trail = append(trail, currentBoxContents)
 
 			nextBoxContents := room[currentBoxContents]
 			if nextBoxContents == prisonerNumber {
 				// if that box has the prisoner's number, they're successful
-				successfulPrisoners = append(successfulPrisoners, prisonerNumber)
-				foundBox = true
+				successfulPrisoners++
 				break
 			}
 
@@ -149,5 +141,5 @@ func runSimulation() (success bool) {
 		}
 	}
 
-	return len(successfulPrisoners) == 100
+	return successfulPrisoners == 100
 }
